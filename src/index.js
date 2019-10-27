@@ -9,14 +9,6 @@ const config= require('./../config/server.json')
 const port = process.env.PORT || 3000
 
 const maintenanceMode=config.maintenanceMode
-// app.use((req,res,next)=>{
-//     if(req.method==='GET'){
-//         res.send('No GET requests are allowed')
-//     }else {
-//         next()
-//     }
-
-// })
 
 app.use((req,res,next)=>{
  if(maintenanceMode==true){
@@ -31,8 +23,6 @@ app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
 
-const jwt = require('jsonwebtoken')
-
 
 
 
@@ -45,11 +35,14 @@ app.listen(port, () =>{
 
 })
 
-const myFucntion= async()=>{
-    const token = jwt.sign({_id:'abc123'},'thisismynewcourse',{expiresIn:'7 days'})
-    console.log(token)
 
+
+const pet = {
+    name: 'Hal',
+    colour:'black'
 }
-myFucntion()
-
-
+pet.toJSON= function(){
+    delete this.name
+    return this
+}
+console.log(JSON.stringify(pet))
