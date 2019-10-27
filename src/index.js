@@ -5,13 +5,27 @@ const User=require('./models/user')
 const Task=require('./models/task')
 const userRouter=require('./routers/user')
 const taskRouter=require('./routers/task')
-
+const config= require('./../config/server.json')
 const port = process.env.PORT || 3000
 
+const maintenanceMode=config.maintenanceMode
+// app.use((req,res,next)=>{
+//     if(req.method==='GET'){
+//         res.send('No GET requests are allowed')
+//     }else {
+//         next()
+//     }
+
+// })
+
 app.use((req,res,next)=>{
-    console.log(req.method,req.path,req.params)
-    next()
+ if(maintenanceMode==true){
+     res.status(503).send('The website is on maintenance mode!')
+ }else{
+     next()
+ }
 })
+
 
 app.use(express.json())
 app.use(userRouter)
